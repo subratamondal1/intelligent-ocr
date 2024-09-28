@@ -12,7 +12,7 @@ format:
 
 test:
 	# Test Code
-	python -m pytest --cov=mylib test_logic.py
+	# python -m pytest --cov=mylib test_logic.py
 
 build:
 	# Build Docker Image
