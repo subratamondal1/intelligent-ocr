@@ -1,0 +1,37 @@
+# Python virtual environment
+venv/
+.venv/
+
+# Caches and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.egg-info/
+
+# Node modules (if you are using any JS)
+node_modules/
+
+# Git and version control
+.git/
+.gitignore
+
+# Poetry and Ruff caches
+*.lock
+.ruff_cache/
+
+# Docker-specific
+Dockerfile
+
+# IDE/editor configs
+.vscode/
+*.swp
+
+# Dependencies
+poetry.lock
+
+# Others (if applicable)
+build/
+dist/
