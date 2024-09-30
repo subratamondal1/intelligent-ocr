@@ -1,0 +1,146 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: #1b1b1b;
+    margin: 0;
+    color: white;
+    overflow: hidden;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    flex-shrink: 0;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: rgba(138, 77, 233, 0.1);
+    backdrop-filter: blur(10px) saturate(180%);
+    box-shadow: 0 4px 15px rgba(138, 77, 233, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+h1:hover {
+    transform: scale(1.05);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.result-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-around;
+    width: 90%;
+    max-width: 1200px;
+    padding: 10px;
+    border: 1px dotted white;
+    border-radius: 8px;
+    flex-grow: 1;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.uploaded-image,
+.ocr-text {
+    flex: 1;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+    margin: 0;
+}
+
+.ocr-text {
+    border: 1px dotted white;
+}
+
+/* Zoom container to enable pan and zoom */
+.zoom-container {
+    overflow: auto;
+    cursor: grab;
+}
+
+.uploaded-image img {
+    max-width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.ocr-text pre {
+    white-space: pre-wrap;
+    font-size: 1em;
+}
+
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: rgba(138, 77, 233, 0.1);
+    backdrop-filter: blur(10px) saturate(180%);
+    box-shadow: 0 4px 15px rgba(138, 77, 233, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Smooth zoom effect on hover */
+.upload-container:hover {
+    transform: translateX(-50%) scale(1.05);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.file-name {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    max-width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+#file-input {
+    display: none;
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: linear-gradient(45deg, #8a4de9, #5f3ed8);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    max-width: 100%;
+}
+
+.upload-button:hover {
+    background: linear-gradient(45deg, #5f3ed8, #8a4de9);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.upload-button svg {
+    vertical-align: middle;
+}

@@ -3,24 +3,24 @@ import numpy as np
 from PIL import Image
 
 
-def remove_horizontal_lines(image_path, preserve_color) -> Image.Image:
+def remove_horizontal_lines(pil_image: Image.Image, preserve_color: str) -> Image.Image:
     """
     Removes horizontal lines from the image and returns a PIL Image object.
 
     Parameters
     ----------
-    image_path : str
-        Path to the image
+    pil_image : PIL.Image.Image
+        Input PIL Image object
     preserve_color : str
         Color to preserve in the image. Options are "blue", "red", "black", or "green".
 
     Returns
     -------
-    pil_image : PIL Image
+    pil_image : PIL.Image.Image
         Image after removing horizontal lines.
     """
-    # Read the image
-    img = cv2.imread(image_path)
+    # Convert PIL Image to OpenCV format (numpy array)
+    img = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
 
     # Convert the image to HSV color space
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -68,12 +68,3 @@ def remove_horizontal_lines(image_path, preserve_color) -> Image.Image:
 
     convert_to_pil_image = Image.fromarray(result_rgb)
     return convert_to_pil_image
-
-
-removed_horizontal_lines = remove_horizontal_lines(
-    image_path="data/raw images/01 table image with margin 1.jpeg",
-    preserve_color="blue",
-)
-
-if __name__ == "__main__":
-    removed_horizontal_lines.show(title="Removed Horizontal Lines")

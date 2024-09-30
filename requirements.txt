@@ -9,3 +9,7 @@ azure-ai-vision-imageanalysis==1.0.0b3
 python-dotenv==1.0.1
 openai==1.50.2
 anthropic==0.34.2
+fastapi==0.115.0
+uvicorn==0.31.0
+jinja2==3.1.4
+python-multipart==0.0.12

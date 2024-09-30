@@ -1,39 +1,54 @@
+import base64
+import io
+
+from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from PIL import Image
+from starlette.requests import Request
 
-from services.claude_ai_vision import compare_and_correct_text
-from services.enhance_text_visibility import enhance_text_visibility
-from services.openai_vision import compare_images
-from services.remove_horizontal_lines import remove_horizontal_lines
-from services.synthesize_azure_ai_ocr import synthesize_azure_ai_ocr
+from services.ocr_pipeline import ocr_pipeline
 
-if __name__ == "__main__":
-    removed_horizontal_lines: Image.Image = remove_horizontal_lines(
-        image_path="data/raw images/01 table image with margin 1.jpeg",
-        preserve_color="blue",
-    )
-    enhanced_text_visibility: Image.Image = enhance_text_visibility(
-        pil_image=removed_horizontal_lines
-    )
-    synthesized_image_from_azure_ocr, extracted_text = synthesize_azure_ai_ocr(
-        image=enhanced_text_visibility
-    )
-    synthesized_image_from_azure_ocr.show()
-    print(extracted_text)
-    compared_text = compare_images(
-        final_processed_image=enhanced_text_visibility,
-        synthesized_image=synthesized_image_from_azure_ocr,
-    )
-    print("=*=" * 50)
-    print("Compared text:")
-    print(compared_text)
-    print()
+app = FastAPI()
 
-    corrected_text = compare_and_correct_text(
-        final_processed_image=enhanced_text_visibility,
-        extracted_text=extracted_text,
-    )
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-    print("=*=" * 50)
-    print("Corrected text:")
-    print(corrected_text)
-    print()
+# Jinja2 template directory
+templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    return templates.TemplateResponse("upload.html", {"request": request})
+
+
+@app.post("/upload/", response_class=HTMLResponse)
+async def upload_image(request: Request, file: UploadFile = File(...)):
+    # Read image content from the uploaded file
+    contents = await file.read()
+
+    # Convert to a PIL Image
+    image = Image.open(io.BytesIO(contents))
+
+    # Convert PIL Image to base64
+    buffered = io.BytesIO()
+    image.save(buffered, format="JPEG")  # Save the image to the buffer in JPEG format
+    image_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+    # Create the image source to use in the HTML template
+    image_src = f"data:image/jpeg;base64,{image_base64}"
+
+    # Dummy text for OCR
+    ocr_text = ocr_pipeline(image=image)
+
+    return templates.TemplateResponse(
+        "upload.html",
+        {
+            "request": request,
+            "file_name": file.filename,
+            "uploaded_image": image_src,
+            "ocr_text": ocr_text,
+        },
+    )

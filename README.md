@@ -2,6 +2,10 @@
 
 ---
 
+<img src="assets/images/MeraMaster OCR.png"/>
+
+---
+
 # Makefile Commands
 
 The `Makefile` provides a set of common commands to manage the development and deployment workflow for the project. Below is a list of the available commands and their purposes.

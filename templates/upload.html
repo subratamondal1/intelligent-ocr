@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeraMaster - OCR</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.2/dist/panzoom.min.js"></script>
+</head>
+
+<body>
+
+    <h1>MeraMaster OCR</h1>
+
+    <!-- Display uploaded image and OCR result -->
+    <div class="result-container">
+        <!-- Column 1: Uploaded Image -->
+        <div class="uploaded-image">
+            <!-- Zoomable container -->
+            <div class="zoom-container">
+                {% if uploaded_image %}
+                <img src="{{ uploaded_image }}" alt="Uploaded Image">
+                {% else %}
+                <p>No image uploaded</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Column 2: OCR Result -->
+        <div class="ocr-text">
+            <!-- Display OCR text -->
+            {% if ocr_text %}
+            <pre>{{ ocr_text }}</pre>
+            {% else %}
+            <p>OCR text will be displayed here...</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Container for file name and upload form -->
+    <div class="upload-container">
+        <!-- Display uploaded file name if available -->
+        {% if file_name %}
+        <p class="file-name">{{ file_name }}</p>
+        {% endif %}
+
+        <!-- Form to upload image -->
+        <form action="/upload/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" id="file-input" onchange="this.form.submit()">
+            <label for="file-input" class="upload-button">
+                <!-- Upload Icon -->
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                        d="M12 3a1 1 0 0 1 .78.375l4 5a1 1 0 1 1-1.56 1.25L13 6.85V14a1 1 0 1 1-2 0V6.85L8.78 9.626a1 1 0 1 1-1.56-1.25l4-5A1 1 0 0 1 12 3ZM9 14v-1H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-4v1a3 3 0 1 1-6 0Zm8 2a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z"
+                        clip-rule="evenodd" />
+                </svg>
+                Upload an Image
+            </label>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const zoomContainer = document.querySelector('.zoom-container');
+            const panzoomInstance = panzoom(zoomContainer, {
+                maxZoom: 3,
+                minZoom: 1,
+                zoomSpeed: 0.2 // Increased zoom speed for more sensitive zooming
+            });
+
+            zoomContainer.addEventListener('mousedown', function () {
+                zoomContainer.style.cursor = 'grabbing';
+            });
+
+            zoomContainer.addEventListener('mouseup', function () {
+                zoomContainer.style.cursor = 'grab';
+            });
+
+            // Show the loading spinner when the form is submitted
+            const form = document.querySelector('form');
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+            form.addEventListener('submit', function () {
+                loadingOverlay.classList.remove('hidden');
+            });
+        });
+    </script>
+
+</body>
+
+</html>
