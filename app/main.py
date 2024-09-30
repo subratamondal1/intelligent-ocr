@@ -1,5 +1,6 @@
 from PIL import Image
 
+from services.claude_ai_vision import compare_and_correct_text
 from services.enhance_text_visibility import enhance_text_visibility
 from services.openai_vision import compare_images
 from services.remove_horizontal_lines import remove_horizontal_lines
@@ -22,4 +23,17 @@ if __name__ == "__main__":
         final_processed_image=enhanced_text_visibility,
         synthesized_image=synthesized_image_from_azure_ocr,
     )
+    print("=*=" * 50)
+    print("Compared text:")
     print(compared_text)
+    print()
+
+    corrected_text = compare_and_correct_text(
+        final_processed_image=enhanced_text_visibility,
+        extracted_text=extracted_text,
+    )
+
+    print("=*=" * 50)
+    print("Corrected text:")
+    print(corrected_text)
+    print()

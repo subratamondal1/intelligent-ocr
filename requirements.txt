@@ -8,3 +8,4 @@ opencv-python-headless==4.10.0.84
 azure-ai-vision-imageanalysis==1.0.0b3
 python-dotenv==1.0.1
 openai==1.50.2
+anthropic==0.34.2
