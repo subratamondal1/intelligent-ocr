@@ -15,4 +15,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY . .
 
 # Define the default command to run the application
-CMD ["python", "main.py"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
