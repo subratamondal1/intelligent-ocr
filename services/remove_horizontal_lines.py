@@ -3,8 +3,22 @@ import numpy as np
 from PIL import Image
 
 
-def remove_horizontal_lines(image_path, preserve_color):
-    """preserve_color_remove_rest"""
+def remove_horizontal_lines(image_path, preserve_color) -> Image.Image:
+    """
+    Removes horizontal lines from the image and returns a PIL Image object.
+
+    Parameters
+    ----------
+    image_path : str
+        Path to the image
+    preserve_color : str
+        Color to preserve in the image. Options are "blue", "red", "black", or "green".
+
+    Returns
+    -------
+    pil_image : PIL Image
+        Image after removing horizontal lines.
+    """
     # Read the image
     img = cv2.imread(image_path)
 

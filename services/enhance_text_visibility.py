@@ -3,8 +3,16 @@ import numpy as np
 from PIL import Image, ImageEnhance
 
 
-def enhance_text_visibility(pil_image: Image.Image):
-    """Enhances color and contrast to make text more visible and reduce bleed-through, then converts to black and white."""
+def enhance_text_visibility(pil_image: Image.Image) -> Image.Image:
+    """
+    Enhances the visibility of text in an image.
+
+    Args:
+        pil_image: A PIL Image object.
+
+    Returns:
+        A PIL Image object with enhanced text visibility.
+    """
     # Enhance the contrast
     pil_image = ImageEnhance.Contrast(pil_image).enhance(1.5)  # Increase contrast
 

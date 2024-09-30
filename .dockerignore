@@ -35,3 +35,7 @@ poetry.lock
 # Others (if applicable)
 build/
 dist/
+
+# Subrata Mondal
+.env
+notebook/
