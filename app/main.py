@@ -1,6 +1,7 @@
 from PIL import Image
 
 from services.enhance_text_visibility import enhance_text_visibility
+from services.openai_vision import compare_images
 from services.remove_horizontal_lines import remove_horizontal_lines
 from services.synthesize_azure_ai_ocr import synthesize_azure_ai_ocr
 
@@ -12,9 +13,13 @@ if __name__ == "__main__":
     enhanced_text_visibility: Image.Image = enhance_text_visibility(
         pil_image=removed_horizontal_lines
     )
-    # Step1: Extraction with Azure Vision AI OCR
-    synthesized_image, extracted_text = synthesize_azure_ai_ocr(
+    synthesized_image_from_azure_ocr, extracted_text = synthesize_azure_ai_ocr(
         image=enhanced_text_visibility
     )
-    synthesized_image.show()
+    synthesized_image_from_azure_ocr.show()
     print(extracted_text)
+    compared_text = compare_images(
+        final_processed_image=enhanced_text_visibility,
+        synthesized_image=synthesized_image_from_azure_ocr,
+    )
+    print(compared_text)
