@@ -39,3 +39,4 @@ dist/
 # Subrata Mondal
 .env
 notebook/
+*.ipynb
