@@ -1,9 +1,8 @@
 [tool.poetry]
-name = "ocr"
+name = "intelligent-ocr"
 version = "0.1.0"
-description = "Text Extraction"
-authors = ["Subrata Mondal <subratasubha2@gmail.com>"]
-license = "MIT"
+description = ""
+authors = ["subratamondal1 <subratasubha2@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -24,9 +23,11 @@ uvicorn = "^0.31.0"
 jinja2 = "^3.1.4"
 python-multipart = "^0.0.12"
 scikit-learn = "^1.5.2"
+ipykernel = "^6.29.5"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
+ipykernel = "^6.29.5"
 
 
 [build-system]
@@ -112,3 +113,4 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
+

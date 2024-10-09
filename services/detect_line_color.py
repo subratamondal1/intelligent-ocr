@@ -7,16 +7,6 @@ from sklearn.cluster import KMeans
 
 from services.remove_horizontal_lines import remove_horizontal_lines
 
-image_path = [
-    "data/raw images/01 table image with margin 1.jpeg",
-    "data/test images/test image 1.jpeg",
-    "data/test images/test image 2 .jpeg",
-]
-# Load Image
-original_image: Image.Image = Image.open(image_path[0])
-
-original_image.show()
-
 
 def detect_line_color(image_pil, n_clusters=3):
     # Convert PIL image to OpenCV format
@@ -63,7 +53,26 @@ def detect_line_color(image_pil, n_clusters=3):
 
 
 def detect_handwritten_text_color(image_pil, n_clusters=3):
+    """
+    Detects the dominant color of handwritten text in an image.
+
+    Parameters
+    ----------
+    image_pil : PIL.Image.Image
+        Input PIL Image object
+    n_clusters : int, optional
+        Number of color clusters to detect, by default 3
+
+    Returns
+    -------
+    str
+        The dominant color of handwritten text in the image, categorized into a
+        general color category (e.g. "black", "blue", "green", "red", "yellow",
+        "unknown").
+    """
+
     # Convert PIL image to OpenCV format
+
     image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
 
     # Convert to grayscale to detect handwritten text
@@ -123,11 +132,22 @@ def detect_handwritten_text_color(image_pil, n_clusters=3):
     return detected_color_name
 
 
-detected_color_name = detect_handwritten_text_color(image_pil=original_image)
-print(f"Detected handwritten text color: {detected_color_name}")
+if __name__ == "__main__":
+    image_path: list[str] = [
+        "data/raw images/01 table image with margin 1.jpeg",
+        "data/test images/test image 1.jpeg",
+        "data/test images/test image 2 .jpeg",
+    ]
+    # Load Image
+    original_image: Image.Image = Image.open(image_path[0])
 
+    original_image.show()
+    original_image = Image.open(image_path[0])
+    original_image.show()
 
-modified_image = remove_horizontal_lines(
-    pil_image=original_image, preserve_color=detected_color_name
-)
-modified_image.show()
+    detected_color_name = detect_line_color(image_pil=original_image, n_clusters=3)
+    print(f"Detected line color: {detected_color_name}")
+    modified_image = remove_horizontal_lines(
+        pil_image=original_image, preserve_color=detected_color_name
+    )
+    modified_image.show()
