@@ -7,10 +7,13 @@ from sklearn.cluster import KMeans
 
 from services.remove_horizontal_lines import remove_horizontal_lines
 
+image_path = [
+    "data/raw images/01 table image with margin 1.jpeg",
+    "data/test images/test image 1.jpeg",
+    "data/test images/test image 2 .jpeg",
+]
 # Load Image
-original_image: Image.Image = Image.open(
-    "data/raw images/01 table image with margin 1.jpeg"
-)
+original_image: Image.Image = Image.open(image_path[0])
 
 original_image.show()
 
@@ -66,22 +69,16 @@ def detect_handwritten_text_color(image_pil, n_clusters=3):
     # Convert to grayscale to detect handwritten text
     gray_image = cv2.cvtColor(image_cv, cv2.COLOR_BGR2GRAY)
 
-    # Use adaptive thresholding to extract potential handwritten text pixels
     # We invert the image, so text pixels become white (255) and background becomes black (0)
     _, binary_image = cv2.threshold(
         gray_image, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU
     )
 
-    # Extract pixels corresponding to potential handwritten text
     text_pixels = image_cv[binary_image > 0]
 
-    # If no text pixels detected, return None
     if text_pixels.size == 0:
         return None
 
-    # Filter text pixels by brightness to avoid noise
-    # Only consider dark pixels, as these are likely to be part of the text
-    # You can adjust the threshold value if needed
     brightness_threshold = 60
     dark_pixels_mask = gray_image[binary_image > 0] < brightness_threshold
     dark_text_pixels = text_pixels[dark_pixels_mask]
@@ -95,7 +92,6 @@ def detect_handwritten_text_color(image_pil, n_clusters=3):
     kmeans.fit(text_pixels)
     colors = kmeans.cluster_centers_.astype(int)
 
-    # Count frequency of each color
     counts = Counter(kmeans.labels_)
 
     # Identify the most frequent color (dominant text color)
@@ -108,7 +104,7 @@ def detect_handwritten_text_color(image_pil, n_clusters=3):
     def categorize_color(rgb):
         r, g, b = rgb
         # Define basic color categories based on RGB values
-        if max(r, g, b) - min(r, g, b) < 20:  # If the color is almost grey
+        if max(r, g, b) - min(r, g, b) < 20:
             return "black"
         elif b > r and b > g:
             return "blue"
@@ -127,7 +123,6 @@ def detect_handwritten_text_color(image_pil, n_clusters=3):
     return detected_color_name
 
 
-# Example usage
 detected_color_name = detect_handwritten_text_color(image_pil=original_image)
 print(f"Detected handwritten text color: {detected_color_name}")
 
