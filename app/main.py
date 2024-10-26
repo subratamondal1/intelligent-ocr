@@ -24,6 +24,12 @@ async def read_root(request: Request):
     return templates.TemplateResponse("upload.html", {"request": request})
 
 
+def convert_to_desired_mode(image, desired_mode):
+    if image.mode != desired_mode:
+        image = image.convert(desired_mode)
+    return image
+
+
 @app.post("/upload/", response_class=HTMLResponse)
 async def upload_image(request: Request, file: UploadFile = File(...)):
     # Read image content from the uploaded file
@@ -31,6 +37,13 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
 
     # Convert to a PIL Image
     image = Image.open(io.BytesIO(contents))
+
+    image = convert_to_desired_mode(image, "RGB")
+    # if image.mode == "RGB":
+    #     image = image.convert("RGB")
+
+    # if image.mode in ("P", "RGBA"):
+    #     image = image.convert("RGB")
 
     # Convert PIL Image to base64
     buffered = io.BytesIO()
