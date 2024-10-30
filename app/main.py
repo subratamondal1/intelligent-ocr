@@ -24,7 +24,7 @@ async def read_root(request: Request):
     return templates.TemplateResponse("upload.html", {"request": request})
 
 
-def convert_to_desired_mode(image, desired_mode):
+def convert_image_to_desired_mode(image, desired_mode):
     if image.mode != desired_mode:
         image = image.convert(desired_mode)
     return image
@@ -38,7 +38,7 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
     # Convert to a PIL Image
     image = Image.open(io.BytesIO(contents))
 
-    image = convert_to_desired_mode(image, "RGB")
+    image = convert_image_to_desired_mode(image=image, desired_mode="RGB")
     # if image.mode == "RGB":
     #     image = image.convert("RGB")
 
@@ -52,10 +52,9 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
 
     # Create the image source to use in the HTML template
     image_src = f"data:image/jpeg;base64,{image_base64}"
-
-    # Dummy text for OCR
     ocr_text = ocr_pipeline(image=image)
 
+    # Perform OCR
     return templates.TemplateResponse(
         "upload.html",
         {

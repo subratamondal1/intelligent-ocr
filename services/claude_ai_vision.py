@@ -33,60 +33,49 @@ def compare_and_correct_text(original_pil, synthesized_pil, extracted_text):
                 {
                     "type": "text",
                     "text": """
-                            **Task:** Final Precision Text Extraction and Verification
+                            Task: Final Precision Text Extraction and Verification
+                            Input:
+                            1. Original handwritten image
+                            2. Synthesized image (based on OCR extraction)
+                            3. Pre-corrected extracted text (from GPT-4o)
+                            Context: This is the third and final pass in a high-precision text extraction pipeline. Previous steps include Microsoft Azure Vision AI OCR and GPT-4V correction. The current accuracy is estimated at 99%, aiming for 100%.
+                            Objective: Perform a meticulous final review and correction of the extracted text, focusing on eliminating the remaining 1% error rate.
+                            Guidelines:
+                            1. Prioritize the original handwritten image as the ultimate source of truth.
+                            2. Use the synthesized image and pre-corrected text as high-confidence references.
+                            3. Conduct a character-by-character comparison between all three inputs.
+                            4. Pay exceptional attention to:
+                              - Numerical data
+                              - Special characters and symbols
+                              - Formatting, including line breaks and spacing
+                              - Capitalization and punctuation
+                            5. Preserve the exact structure and layout of the original handwritten text.
+                            6. Do not introduce new interpretations or significant changes to the pre-corrected text.
+                            7. If discrepancies are found, always defer to the original handwritten image.
+                            Special Instructions for Tables:
+                            - If any tabular data is detected, represent it using ASCII characters (e.g., |, -, +) to create a visually accurate table that mirrors the structure of the original handwritten image.
+                            - Maintain the alignment of columns and rows to ensure the table's readability and accuracy.
+                            - If the content is not tabular, output the text in its natural format without creating a table.
+                            Error Handling:
+                            - For any remaining ambiguities, replace or remove them.
+                            - If a character is indecipherable, describe it in detail using [description] format.
+                            Verification Process:
+                            1. Scan the entire document systematically, line by line.
+                            2. Cross-reference each word and character across all three inputs.
+                            3. Identify and correct any remaining discrepancies, no matter how minor.
+                            4. Double-check all corrections against the original image.
+                            Note:
+                            In case of, if the transcription provided accurately reflects the original handwritten image, with 100% fidelity in terms of text content, formatting, symbols, and layout. Then no
+                            corrections are required and in that case return the TEXT AS IT IS with no extra words added.
+                            Output Format:
+                            Provide the final, corrected text exactly as it appears in the original handwritten image. Maintain all formatting, line breaks, and spatial relationships between text elements.
+                            Final Instruction: Analyze all inputs thoroughly, then produce the most accurate transcription possible of the original handwritten document, aiming for 100% fidelity to the source material.
+                            
+                            Output Format (strictly follow this output instruction):
+                            1. Preserve the exact structure and layout of the original handwritten text.
+                            2. **Output only the final, corrected text. Do not add explanatory text or verification statements.**
 
-                            **Objective:** Extract and output only the final, corrected text exactly as it appears in the original handwritten image. Maintain all formatting, line breaks, and spatial relationships between text elements, but **do not include any additional commentary or remarks** in the output.
-
-                            **Guidelines:**
-                            1. Use the original handwritten image as the primary source of truth, with the synthesized image and pre-corrected text as high-confidence references.
-                            2. Conduct a meticulous character-by-character review, especially for:
-                            - Numerical data, special characters, and symbols
-                            - Formatting (line breaks, spacing, capitalization, punctuation)
-                            3. Preserve the exact structure and layout of the original handwritten text.
-                            4. **Output only the final, corrected text. Do not add explanatory text or verification statements.**
-
-                            **Special Instructions for Tables:**
-                            - For tabular data, use ASCII characters (|, -, +) to replicate the table layout.
-                         """,
-                    # "text": """
-                    #         Task: Final Precision Text Extraction and Verification
-                    #         Input:
-                    #         1. Original handwritten image
-                    #         2. Synthesized image (based on OCR extraction)
-                    #         3. Pre-corrected extracted text (from GPT-4o)
-                    #         Context: This is the third and final pass in a high-precision text extraction pipeline. Previous steps include Microsoft Azure Vision AI OCR and GPT-4V correction. The current accuracy is estimated at 99%, aiming for 100%.
-                    #         Objective: Perform a meticulous final review and correction of the extracted text, focusing on eliminating the remaining 1% error rate.
-                    #         Guidelines:
-                    #         1. Prioritize the original handwritten image as the ultimate source of truth.
-                    #         2. Use the synthesized image and pre-corrected text as high-confidence references.
-                    #         3. Conduct a character-by-character comparison between all three inputs.
-                    #         4. Pay exceptional attention to:
-                    #           - Numerical data
-                    #           - Special characters and symbols
-                    #           - Formatting, including line breaks and spacing
-                    #           - Capitalization and punctuation
-                    #         5. Preserve the exact structure and layout of the original handwritten text.
-                    #         6. Do not introduce new interpretations or significant changes to the pre-corrected text.
-                    #         7. If discrepancies are found, always defer to the original handwritten image.
-                    #         Special Instructions for Tables:
-                    #         - If any tabular data is detected, represent it using ASCII characters (e.g., |, -, +) to create a visually accurate table that mirrors the structure of the original handwritten image.
-                    #         - Maintain the alignment of columns and rows to ensure the table's readability and accuracy.
-                    #         - If the content is not tabular, output the text in its natural format without creating a table.
-                    #         Error Handling:
-                    #         - For any remaining ambiguities, replace or remove them.
-                    #         - If a character is indecipherable, describe it in detail using [description] format.
-                    #         Verification Process:
-                    #         1. Scan the entire document systematically, line by line.
-                    #         2. Cross-reference each word and character across all three inputs.
-                    #         3. Identify and correct any remaining discrepancies, no matter how minor.
-                    #         4. Double-check all corrections against the original image.
-                    #         Note:
-                    #         In case of, if the transcription provided accurately reflects the original handwritten image, with 100% fidelity in terms of text content, formatting, symbols, and layout. Then no
-                    #         corrections are required and in that case return the TEXT AS IT IS with no extra words added.
-                    #         Output Format:
-                    #         Provide the final, corrected text exactly as it appears in the original handwritten image. Maintain all formatting, line breaks, and spatial relationships between text elements.
-                    #         Final Instruction: Analyze all inputs thoroughly, then produce the most accurate transcription possible of the original handwritten document, aiming for 100% fidelity to the source material.
-                    #         """,
+                            """,
                 },
                 {
                     "type": "image",
