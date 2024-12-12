@@ -10,8 +10,8 @@ from PIL import Image
 load_dotenv()
 
 
-OPENAI_KEY: str = os.getenv(key="OPENAI_KEY", default="")
-client = OpenAI(api_key=OPENAI_KEY)
+OPENAI_API_KEY: str = os.getenv(key="OPENAI_API_KEY", default="")
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 
 def encode_pil_image(pil_image) -> str:
@@ -83,7 +83,7 @@ def compare_images(final_processed_image: Image.Image, synthesized_image: Image.
 
     # Make the API call
     response = client.chat.completions.create(
-        model="gpt-4-vision-preview", messages=messages, max_tokens=300
+        model="gpt-4o-2024-11-20", messages=messages, max_tokens=3000
     )
 
     return response.choices[0].message.content

@@ -67,14 +67,14 @@ def synthesize_azure_ai_ocr(image: Image.Image):
     # Set the values of your computer vision endpoint and computer vision key
     try:
         AZURE_ENDPOINT: str = os.getenv(key="AZURE_ENDPOINT", default="")
-        AZURE_KEY: str = os.getenv(key="AZURE_KEY", default="")
+        AZURE_API_KEY: str = os.getenv(key="AZURE_API_KEY", default="")
     except NameError:
-        print("Missing environment variables 'AZURE_ENDPOINT' or 'AZURE_KEY'")
+        print("Missing environment variables 'AZURE_ENDPOINT' or 'AZURE_API_KEY'")
         print("Set them before running this sample.")
 
     # Create an Image Analysis client
     client = ImageAnalysisClient(
-        endpoint=AZURE_ENDPOINT, credential=AzureKeyCredential(key=AZURE_KEY)
+        endpoint=AZURE_ENDPOINT, credential=AzureKeyCredential(key=AZURE_API_KEY)
     )
 
     # Convert the PIL image to byte data

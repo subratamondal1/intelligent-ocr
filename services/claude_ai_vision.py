@@ -8,10 +8,10 @@ from dotenv import load_dotenv
 # Load the environment variables from the .env file
 load_dotenv()
 
-CLAUDE_KEY = os.getenv(key="CLAUDE_KEY", default="")
+ANTHROPIC_API_KEY = os.getenv(key="ANTHROPIC_API_KEY", default="")
 
 # Initialize the Anthropic client
-client = Anthropic(api_key=CLAUDE_KEY)
+client = Anthropic(api_key=ANTHROPIC_API_KEY)
 
 
 def encode_pil_image(pil_image):
@@ -50,7 +50,7 @@ def compare_and_correct_text(original_pil, synthesized_pil, extracted_text):
                               - Formatting, including line breaks and spacing
                               - Capitalization and punctuation
                             5. Preserve the exact structure and layout of the original handwritten text.
-                            6. Do not introduce new interpretations or significant changes to the pre-corrected text.
+                            6. **Do not introduce new interpretations or significant changes to the pre-corrected text.**
                             7. If discrepancies are found, always defer to the original handwritten image.
                             Special Instructions for Tables:
                             - If any tabular data is detected, represent it using ASCII characters (e.g., |, -, +) to create a visually accurate table that mirrors the structure of the original handwritten image.
@@ -100,7 +100,7 @@ def compare_and_correct_text(original_pil, synthesized_pil, extracted_text):
 
     # Make the API call
     response = client.messages.create(
-        model="claude-3-sonnet-20240229", max_tokens=1000, messages=messages
+        model="claude-3-5-sonnet-20241022", max_tokens=3000, messages=messages
     )
 
     return response.content[0].text
