@@ -64,3 +64,21 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
             "ocr_text": ocr_text,
         },
     )
+
+
+@app.post("/v1/api/ai/ocr/")
+async def ocr_api(file: UploadFile = File(...)):
+    # Read image content from the uploaded file
+    contents = await file.read()
+
+    # Convert to a PIL Image
+    image = Image.open(io.BytesIO(contents))
+
+    # Convert image to desired mode
+    image = convert_image_to_desired_mode(image=image, desired_mode="RGB")
+
+    # Perform OCR
+    ocr_text = ocr_pipeline(image=image)
+
+    # Return the extracted text as JSON response
+    return {"text": ocr_text}
