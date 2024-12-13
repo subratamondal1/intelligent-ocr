@@ -2,7 +2,7 @@ import base64
 import io
 
 from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse,RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from PIL import Image
@@ -18,11 +18,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Jinja2 template directory
 templates = Jinja2Templates(directory="templates")
 
-
-@app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request):
-    return templates.TemplateResponse("upload.html", {"request": request})
-
+@app.get(path="/", include_in_schema=False)
+async def root() -> RedirectResponse:
+    """Redirect root to API documentation."""
+    return RedirectResponse(url="/docs")
 
 def convert_image_to_desired_mode(image, desired_mode):
     if image.mode != desired_mode:
@@ -30,7 +29,12 @@ def convert_image_to_desired_mode(image, desired_mode):
     return image
 
 
-@app.post("/upload/", response_class=HTMLResponse)
+@app.get("/v1/api/ai/upload/", response_class=HTMLResponse)
+async def landing_page(request: Request):
+    return templates.TemplateResponse("upload.html", {"request": request})
+
+
+@app.post("/v1/api/ai/upload/", response_class=HTMLResponse)
 async def upload_image(request: Request, file: UploadFile = File(...)):
     # Read image content from the uploaded file
     contents = await file.read()
@@ -39,11 +43,6 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
     image = Image.open(io.BytesIO(contents))
 
     image = convert_image_to_desired_mode(image=image, desired_mode="RGB")
-    # if image.mode == "RGB":
-    #     image = image.convert("RGB")
-
-    # if image.mode in ("P", "RGBA"):
-    #     image = image.convert("RGB")
 
     # Convert PIL Image to base64
     buffered = io.BytesIO()
@@ -67,7 +66,7 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
 
 
 @app.post("/v1/api/ai/ocr/")
-async def ocr_api(file: UploadFile = File(...)):
+async def ocr(file: UploadFile = File(...)):
     # Read image content from the uploaded file
     contents = await file.read()
 
@@ -82,3 +81,4 @@ async def ocr_api(file: UploadFile = File(...)):
 
     # Return the extracted text as JSON response
     return {"text": ocr_text}
+
